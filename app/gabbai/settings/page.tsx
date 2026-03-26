@@ -420,6 +420,30 @@ export default function SettingsPage() {
           </Button>
         </CardContent>
       </Card>
+      {/* Staff accounts */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Link2 className="h-4 w-4" />
+            Staff &amp; Access
+          </CardTitle>
+          <CardDescription>Manage gabbai accounts and change your password</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-2">
+          <a
+            href="/gabbai/settings/staff"
+            className="inline-flex items-center gap-2 text-sm font-medium hover:underline"
+          >
+            Manage Staff Accounts →
+          </a>
+          <a
+            href="/gabbai/settings/change-password"
+            className="inline-flex items-center gap-2 text-sm font-medium hover:underline"
+          >
+            Change My Password →
+          </a>
+        </CardContent>
+      </Card>
     </div>
   );
 }
