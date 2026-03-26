@@ -11,10 +11,10 @@ async function main() {
 
   // Create GABBAI user
   const gabbaiUser = await prisma.user.upsert({
-    where: { email: "gabbai@shul.local" },
+    where: { email: "akivaadler@gmail.com" },
     update: {},
     create: {
-      email: "gabbai@shul.local",
+      email: "akivaadler@gmail.com",
       passwordHash,
       role: "GABBAI",
     },
@@ -329,7 +329,7 @@ async function main() {
   console.log("Created default settings");
   console.log("\n✅ Seed complete!");
   console.log("\nLogin credentials:");
-  console.log("  Gabbai:  gabbai@shul.local / changeme");
+  console.log("  Gabbai:  akivaadler@gmail.com / changeme");
   console.log("  Member:  member@shul.local / changeme");
 }
 
