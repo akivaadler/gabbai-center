@@ -1,0 +1,211 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  role          String    @default("MEMBER") // "GABBAI" | "MEMBER"
+  member        Member?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Member {
+  id               String           @id @default(cuid())
+  userId           String?          @unique
+  user             User?            @relation(fields: [userId], references: [id])
+  firstName        String
+  lastName         String
+  hebrewName       String?          // e.g. "ראובן בן יעקב"
+  hebrewMotherName String?          // mother's Hebrew name
+  email            String?
+  phone            String?
+  address          String?
+  memberSince      DateTime?
+  isActive         Boolean          @default(true)
+  notes            String?          // gabbai-only notes
+  preferences      String?          // JSON string
+  familyId         String?
+  family           Family?          @relation(fields: [familyId], references: [id])
+  lifeEvents       LifeEvent[]
+  kibbudim         Kibbud[]
+  donations        Donation[]
+  leinings         Leining[]
+  pledges          DonationPledge[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+}
+
+model Family {
+  id        String   @id @default(cuid())
+  name      String
+  members   Member[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Shiur {
+  id          String   @id @default(cuid())
+  title       String
+  titleHe     String?
+  description String?
+  teacher     String?
+  dayOfWeek   String?  // "0"-"6" or "SHABBOS" or "DAILY"
+  time        String?
+  location    String?
+  isActive    Boolean  @default(true)
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model InviteToken {
+  id        String    @id @default(cuid())
+  token     String    @unique @default(cuid())
+  email     String?
+  usedAt    DateTime?
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+}
+
+model DonationPledge {
+  id        String    @id @default(cuid())
+  memberId  String
+  member    Member    @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  amount    Float
+  currency  String    @default("USD")
+  frequency String    @default("ANNUAL") // ANNUAL | MONTHLY | ONE_TIME
+  occasion  String?
+  startDate DateTime
+  endDate   DateTime?
+  isActive  Boolean   @default(true)
+  notes     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model LifeEvent {
+  id                String   @id @default(cuid())
+  memberId          String
+  member            Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  type              String   // BIRTHDAY | ANNIVERSARY | BAR_MITZVAH | YAHRTZEIT | OTHER
+  label             String?
+  hebrewDay         Int
+  hebrewMonth       Int      // 1=Nisan, 7=Tishrei, etc. (use hebcal numbering)
+  hebrewYear        Int?     // null for recurring
+  gregorianEquivalent DateTime?
+  recurs            Boolean  @default(true)
+  notifyGabbai      Boolean  @default(true)
+  linkedMemberName  String?
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model ShabbosSchedule {
+  id            String         @id @default(cuid())
+  parsha        String?
+  shabbosDate   DateTime       @unique
+  hebrewDay     Int
+  hebrewMonth   Int
+  hebrewYear    Int
+  notes         String?
+  leinings      Leining[]
+  kibbudim      Kibbud[]
+  announcements Announcement[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model MinyanTime {
+  id              String   @id @default(cuid())
+  name            String   // e.g. "Shacharis", "Mincha"
+  dayOfWeek       String   // "0"-"6" or "SHABBOS" or "YOM_TOV"
+  time            String   // "HH:MM"
+  isActive        Boolean  @default(true)
+  seasonalOverride String? // JSON
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Leining {
+  id                String          @id @default(cuid())
+  shabbosScheduleId String
+  shabbosSchedule   ShabbosSchedule @relation(fields: [shabbosScheduleId], references: [id], onDelete: Cascade)
+  aliyah            String          // "1"-"7" | "MAFTIR" | "HAFTORAH" | "SPECIAL"
+  memberId          String?
+  member            Member?         @relation(fields: [memberId], references: [id])
+  notes             String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+
+model Kibbud {
+  id                String           @id @default(cuid())
+  memberId          String
+  member            Member           @relation(fields: [memberId], references: [id])
+  shabbosScheduleId String?
+  shabbosSchedule   ShabbosSchedule? @relation(fields: [shabbosScheduleId], references: [id])
+  type              String           // ALIYAH | PETICHAH | GELILAH | HAGBAH | ARON | HAFTORAH | LEINING | OTHER
+  aliyahNumber      String?
+  occasion          String?
+  date              DateTime
+  notes             String?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+}
+
+model Donation {
+  id          String   @id @default(cuid())
+  memberId    String
+  member      Member   @relation(fields: [memberId], references: [id])
+  amount      Float
+  currency    String   @default("USD")
+  date        DateTime
+  method      String   // CASH | CHECK | CREDIT_CARD | ONLINE | OTHER
+  occasion    String?
+  notes       String?
+  receiptSent Boolean  @default(false)
+  receiptPdf  String?
+  taxYear     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Announcement {
+  id                String           @id @default(cuid())
+  shabbosScheduleId String?
+  shabbosSchedule   ShabbosSchedule? @relation(fields: [shabbosScheduleId], references: [id])
+  title             String
+  body              String
+  publishDate       DateTime
+  expiresDate       DateTime?
+  isPublic          Boolean          @default(true)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+}
+
+model ReminderRule {
+  id            String   @id @default(cuid())
+  type          String   // NO_ALIYAH_IN_X_DAYS | YAHRTZEIT_UPCOMING | etc.
+  thresholdDays Int      @default(365)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
