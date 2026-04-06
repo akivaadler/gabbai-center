@@ -37,6 +37,30 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   providers: [
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? [
+          GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            async profile(profile) {
+              // Look up existing user by Google email
+              const user = await prisma.user.findUnique({
+                where: { email: profile.email },
+                include: { member: true },
+              });
+              if (!user) throw new Error("No account found for this Google email.");
+              return {
+                id: user.id,
+                email: user.email,
+                name: profile.name,
+                image: profile.picture,
+                role: user.role,
+                memberId: user.member?.id ?? null,
+              };
+            },
+          }),
+        ]
+      : []),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
