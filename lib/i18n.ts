@@ -987,6 +987,10 @@ export const translations = {
       gabbaiCenter: 'מרכז גבאי',
       tagline: 'מערכת ניהול קהילה',
       enterCredentials: 'הכנס את פרטי הכניסה שלך',
+      continueWithGoogle: 'כניסה עם Google',
+      orSignInWith: 'או כנס עם דואר אלקטרוני',
+      showPassword: 'הצג סיסמה',
+      hidePassword: 'הסתר סיסמה',
     },
     portal: {
       myProfile: 'הפרופיל שלי',
