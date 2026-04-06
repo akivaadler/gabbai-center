@@ -424,6 +424,10 @@ export const translations = {
       gabbaiCenter: 'Gabbai Center',
       tagline: 'Shul Management Platform',
       enterCredentials: 'Enter your credentials to access the portal',
+      continueWithGoogle: 'Continue with Google',
+      orSignInWith: 'or sign in with email',
+      showPassword: 'Show password',
+      hidePassword: 'Hide password',
     },
     // Portal (member portal)
     portal: {
