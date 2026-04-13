@@ -74,6 +74,9 @@ interface DashboardClientProps {
   shabbosDateStr: string;
   shabbosHebrew: string;
   parsha: string | null;
+  zmanim: { neitz: string | null; chatzot: string | null; shkia: string | null } | null;
+  isShabbosHaMevarchim: boolean;
+  moladText: string | null;
   memberCount: number;
   activeCount: number;
   kibbudimThisMonth: number;
