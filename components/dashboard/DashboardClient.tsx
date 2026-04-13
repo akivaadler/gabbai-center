@@ -214,15 +214,6 @@ export function DashboardClient({
               {parsha && (
                 <p className="text-navy-300 text-sm mt-0.5">{parsha}</p>
               )}
-              <a
-                href="https://www.ou.org/holidays/shabbat/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs text-navy-400 hover:text-navy-200 mt-1 transition-colors"
-              >
-                <ExternalLink className="h-3 w-3" />
-                {lang === "he" ? "לוח OU" : "OU Calendar"}
-              </a>
             </div>
           </div>
 
