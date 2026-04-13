@@ -21,6 +21,8 @@ export default async function DashboardPage() {
   const upcomingShabbos = getUpcomingShabbos();
   const parsha = getParshaForShabbos(upcomingShabbos);
   const shabbosHebrew = formatHebrewDate(toHebrewDate(upcomingShabbos));
+  const { isShabbosHaMevarchim, moladText } = getShabbosExtras(upcomingShabbos);
+  const [zmanim] = await Promise.all([getZmanim(new Date())]);
 
   const shabbosDateStr = upcomingShabbos.toLocaleDateString("en-US", {
     weekday: "long",
