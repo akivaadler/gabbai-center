@@ -616,54 +616,6 @@ export function DashboardClient({
         </CardContent>
       </Card>
 
-      {/* Quick actions */}
-      <div>
-        <h2 className="text-lg font-semibold mb-3">{t.dashboard.quickActions}</h2>
-        <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3">
-          <Button asChild>
-            <Link href="/gabbai/members/new">
-              <UserPlus className="h-4 w-4 me-2" />
-              {t.dashboard.addMember}
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/gabbai/members">
-              <Users className="h-4 w-4 me-2" />
-              {t.dashboard.viewDirectory}
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/gabbai/schedule">
-              <Calendar className="h-4 w-4 me-2" />
-              {t.dashboard.schedule}
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/gabbai/kibbudim">
-              <Star className="h-4 w-4 me-2" />
-              {t.dashboard.logKibbud}
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/gabbai/minyan">
-              <Clock className="h-4 w-4 me-2" />
-              {t.dashboard.minyanTimes}
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/gabbai/donations">
-              <DollarSign className="h-4 w-4 me-2" />
-              {t.donations.title}
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/gabbai/announcements">
-              <Megaphone className="h-4 w-4 me-2" />
-              {t.announcements.title}
-            </Link>
-          </Button>
-        </div>
-      </div>
     </div>
   );
 }
