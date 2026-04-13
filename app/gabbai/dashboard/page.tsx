@@ -181,6 +181,9 @@ export default async function DashboardPage() {
   return (
     <DashboardClient
       userEmail={session?.user?.email}
+      zmanim={zmanim}
+      isShabbosHaMevarchim={isShabbosHaMevarchim}
+      moladText={moladText}
       shabbosDateStr={shabbosDateStr}
       shabbosHebrew={shabbosHebrew}
       parsha={parsha}
