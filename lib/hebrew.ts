@@ -140,3 +140,79 @@ export function daysInHebrewMonth(month: number, year: number): number {
 
 // Re-export months enum for convenience
 export { months };
+
+/**
+ * Returns today's zmanim (neitz, chatzot, shkia) from HebCal API.
+ * Uses SHUL_GEONAME_ID env var (default: 281184 = Jerusalem).
+ */
+export async function getZmanim(date: Date): Promise<{
+  neitz: string | null;
+  chatzot: string | null;
+  shkia: string | null;
+} | null> {
+  const geonameid = process.env.SHUL_GEONAME_ID ?? "281184";
+  const dateStr = date.toISOString().split("T")[0];
+  try {
+    const res = await fetch(
+      `https://www.hebcal.com/zmanim?cfg=json&geonameid=${geonameid}&date=${dateStr}`,
+      { next: { revalidate: 3600 } }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const times = data.times ?? {};
+    const tzid: string = data.location?.tzid ?? "Asia/Jerusalem";
+    const fmt = (iso: string | undefined): string | null => {
+      if (!iso) return null;
+      return new Date(iso).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: tzid,
+      });
+    };
+    return {
+      neitz: fmt(times.sunrise),
+      chatzot: fmt(times.chatzot),
+      shkia: fmt(times.sunset),
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Returns Shabbos Mevarchim and Molad info for the given Shabbos date.
+ */
+export function getShabbosExtras(shabbosDate: Date): {
+  isShabbosHaMevarchim: boolean;
+  moladText: string | null;
+} {
+  try {
+    const mevarchimEvents = HebrewCalendar.calendar({
+      start: shabbosDate,
+      end: shabbosDate,
+      mask: flags.SHABBAT_MEVARCHIM,
+    });
+    if (mevarchimEvents.length === 0) {
+      return { isShabbosHaMevarchim: false, moladText: null };
+    }
+    // Find the upcoming Rosh Chodesh (within 7 days)
+    const end = new Date(shabbosDate);
+    end.setDate(end.getDate() + 7);
+    const rcEvents = HebrewCalendar.calendar({
+      start: shabbosDate,
+      end,
+      mask: flags.ROSH_CHODESH,
+    });
+    const firstOfMonth = rcEvents.find((e) => e.getDate().getDate() === 1) ?? rcEvents[rcEvents.length - 1];
+    if (!firstOfMonth) return { isShabbosHaMevarchim: true, moladText: null };
+    const rc = firstOfMonth.getDate();
+    const moladEvent = new MoladEvent(rc, rc.getFullYear(), rc.getMonth());
+    return {
+      isShabbosHaMevarchim: true,
+      moladText: moladEvent.render("en"),
+    };
+  } catch {
+    return { isShabbosHaMevarchim: false, moladText: null };
+  }
+}
