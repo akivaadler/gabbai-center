@@ -7,6 +7,8 @@ import {
   formatHebrewDate,
   toHebrewDate,
   getGregorianForCurrentYear,
+  getZmanim,
+  getShabbosExtras,
 } from "@/lib/hebrew";
 import { HDate } from "@hebcal/core";
 import { DashboardClient } from "@/components/dashboard/DashboardClient";
