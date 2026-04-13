@@ -46,6 +46,7 @@ function NavItems({ onClose }: { onClose?: () => void }) {
     { href: "/gabbai/announcements",      label: t.nav.announcements, icon: Megaphone },
     { href: "/gabbai/reminders",          label: t.nav.reminders,     icon: Bell },
     { href: "/gabbai/sms",               label: t.nav.sms,           icon: MessageSquare },
+    { href: "/gabbai/judaica",            label: t.nav.judaica,       icon: Scroll },
     { href: "/gabbai/members/import",     label: t.nav.import,        icon: Upload },
     { href: "/gabbai/settings",           label: t.nav.settings,      icon: Settings },
   ];
