@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export default async function SchedulePage() {
   const rawSchedules = await prisma.shabbosSchedule.findMany({
-    orderBy: { shabbosDate: "desc" },
+    orderBy: { shabbosDate: "asc" },
     include: {
       _count: { select: { kibbudim: true, leinings: true } },
     },
