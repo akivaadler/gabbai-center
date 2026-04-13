@@ -22,6 +22,7 @@ export const translations = {
       sms: 'Bulk SMS',
       bneiMitzva: "B'nei Mitzva",
       import: 'Import Members',
+      judaica: 'Judaica Inventory',
     },
     // Dashboard
     dashboard: {
