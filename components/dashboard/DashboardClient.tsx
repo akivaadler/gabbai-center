@@ -18,6 +18,11 @@ import {
   AlertTriangle,
   CalendarDays,
   Megaphone,
+  Sunrise,
+  Sun,
+  Sunset,
+  ExternalLink,
+  Moon,
 } from "lucide-react";
 
 interface UpcomingEvent {
