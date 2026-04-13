@@ -207,7 +207,7 @@ export function getShabbosExtras(shabbosDate: Date): {
     const firstOfMonth = rcEvents.find((e) => e.getDate().getDate() === 1) ?? rcEvents[rcEvents.length - 1];
     if (!firstOfMonth) return { isShabbosHaMevarchim: true, moladText: null };
     const rc = firstOfMonth.getDate();
-    const moladEvent = new MoladEvent(rc, rc.getFullYear(), rc.getMonth());
+    const moladEvent = new MoladEvent(rc, rc.getFullYear(), rc.getMonth(), {});
     return {
       isShabbosHaMevarchim: true,
       moladText: moladEvent.render("en"),
