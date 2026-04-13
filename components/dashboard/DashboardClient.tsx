@@ -21,7 +21,6 @@ import {
   Sunrise,
   Sun,
   Sunset,
-  ExternalLink,
   Moon,
 } from "lucide-react";
 
