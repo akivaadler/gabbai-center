@@ -172,11 +172,34 @@ export function DashboardClient({
 
       {/* Hebrew date + Shabbos card */}
       <Card className="bg-navy-900 text-white border-0">
-        <CardContent className="pt-6">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div>
+        <CardContent className="pt-6 space-y-4">
+          <div className="flex items-start justify-between flex-wrap gap-4">
+            <div className="space-y-1">
               <p className="text-navy-300 text-sm">{t.dashboard.today}</p>
               <HebrewCalendarDisplay className="mt-1" />
+              {/* Zmanim */}
+              {zmanim && (
+                <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
+                  {zmanim.neitz && (
+                    <span className="flex items-center gap-1 text-xs text-navy-300">
+                      <Sunrise className="h-3 w-3 text-gold-400" />
+                      {lang === "he" ? "נץ" : "Neitz"}: <span className="text-white">{zmanim.neitz}</span>
+                    </span>
+                  )}
+                  {zmanim.chatzot && (
+                    <span className="flex items-center gap-1 text-xs text-navy-300">
+                      <Sun className="h-3 w-3 text-gold-400" />
+                      {lang === "he" ? "חצות" : "Chatzot"}: <span className="text-white">{zmanim.chatzot}</span>
+                    </span>
+                  )}
+                  {zmanim.shkia && (
+                    <span className="flex items-center gap-1 text-xs text-navy-300">
+                      <Sunset className="h-3 w-3 text-gold-400" />
+                      {lang === "he" ? "שקיעה" : "Shkia"}: <span className="text-white">{zmanim.shkia}</span>
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
             <div className={isRTL ? "text-left" : "text-right"}>
               <p className="text-navy-300 text-sm">{t.dashboard.upcomingShabbos}</p>
@@ -191,10 +214,83 @@ export function DashboardClient({
               {parsha && (
                 <p className="text-navy-300 text-sm mt-0.5">{parsha}</p>
               )}
+              <a
+                href="https://www.ou.org/holidays/shabbat/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-navy-400 hover:text-navy-200 mt-1 transition-colors"
+              >
+                <ExternalLink className="h-3 w-3" />
+                {lang === "he" ? "לוח OU" : "OU Calendar"}
+              </a>
             </div>
           </div>
+
+          {/* Shabbos Mevarchim banner */}
+          {isShabbosHaMevarchim && (
+            <div className="border-t border-white/10 pt-3 flex items-start gap-2">
+              <Moon className="h-4 w-4 text-gold-400 mt-0.5 shrink-0" />
+              <div>
+                <p className="text-sm font-medium text-white">
+                  {lang === "he" ? "שבת מברכים" : "Shabbat Mevarchim"}
+                </p>
+                {moladText && (
+                  <p className="text-xs text-navy-300 mt-0.5">{moladText}</p>
+                )}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
+
+      {/* Quick actions — high up so they're immediately accessible */}
+      <div>
+        <h2 className="text-sm font-medium text-muted-foreground mb-2">{t.dashboard.quickActions}</h2>
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
+          <Button asChild size="sm">
+            <Link href="/gabbai/members/new">
+              <UserPlus className="h-4 w-4 me-1.5" />
+              {t.dashboard.addMember}
+            </Link>
+          </Button>
+          <Button asChild size="sm" variant="outline">
+            <Link href="/gabbai/members">
+              <Users className="h-4 w-4 me-1.5" />
+              {t.dashboard.viewDirectory}
+            </Link>
+          </Button>
+          <Button asChild size="sm" variant="outline">
+            <Link href="/gabbai/schedule">
+              <Calendar className="h-4 w-4 me-1.5" />
+              {t.dashboard.schedule}
+            </Link>
+          </Button>
+          <Button asChild size="sm" variant="outline">
+            <Link href="/gabbai/kibbudim">
+              <Star className="h-4 w-4 me-1.5" />
+              {t.dashboard.logKibbud}
+            </Link>
+          </Button>
+          <Button asChild size="sm" variant="outline">
+            <Link href="/gabbai/minyan">
+              <Clock className="h-4 w-4 me-1.5" />
+              {t.dashboard.minyanTimes}
+            </Link>
+          </Button>
+          <Button asChild size="sm" variant="outline">
+            <Link href="/gabbai/donations">
+              <DollarSign className="h-4 w-4 me-1.5" />
+              {t.donations.title}
+            </Link>
+          </Button>
+          <Button asChild size="sm" variant="outline">
+            <Link href="/gabbai/announcements">
+              <Megaphone className="h-4 w-4 me-1.5" />
+              {t.announcements.title}
+            </Link>
+          </Button>
+        </div>
+      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
