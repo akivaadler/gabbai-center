@@ -601,6 +601,7 @@ export const translations = {
       sms: 'SMS המוני',
       bneiMitzva: 'בני מצווה',
       import: 'ייבוא חברים',
+      judaica: 'מלאי יודאיקה',
     },
     dashboard: {
       title: 'לוח בקרה',
