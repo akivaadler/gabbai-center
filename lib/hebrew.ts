@@ -1,4 +1,4 @@
-import { HDate, HebrewCalendar, gematriya, months, flags } from "@hebcal/core";
+import { HDate, HebrewCalendar, gematriya, months, flags, MoladEvent } from "@hebcal/core";
 
 // Hebrew month numbering: 1=Nisan, 2=Iyar, 3=Sivan, 4=Tammuz, 5=Av, 6=Elul,
 // 7=Tishrei, 8=Cheshvan, 9=Kislev, 10=Tevet, 11=Shevat, 12=Adar/Adar I, 13=Adar II
