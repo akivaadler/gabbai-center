@@ -22,6 +22,7 @@ import {
   Upload,
   GraduationCap,
   HandCoins,
+  Scroll,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/components/providers/LanguageProvider";
